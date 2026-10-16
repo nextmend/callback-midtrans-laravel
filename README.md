@@ -1,5 +1,7 @@
 # Callback Midtrans tidak masuk: contoh Laravel
 
+[![tests](https://github.com/nextmend/callback-midtrans-laravel/actions/workflows/tests.yml/badge.svg)](https://github.com/nextmend/callback-midtrans-laravel/actions/workflows/tests.yml)
+
 Contoh yang bisa dijalankan untuk artikel [Callback Midtrans tidak masuk: penyebab dan perbaikannya](https://nextmend.dev/artikel/callback-midtrans-tidak-masuk/?utm_source=github&utm_medium=readme&utm_campaign=artikel-callback).
 
 Pembayaran sudah `settlement` di dashboard Midtrans, tetapi order di aplikasi tetap `pending`. Repo ini mereproduksi salah satu penyebabnya di Laravel: route notifikasi ada di `routes/web.php`, jadi kena pengecekan CSRF dan Midtrans menerima `419`. Laravel tidak mencatat error ini di log, dan test bawaan tetap hijau karena pengecekan CSRF dimatikan saat test.
