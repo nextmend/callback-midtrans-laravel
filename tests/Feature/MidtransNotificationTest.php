@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Order;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,6 +16,16 @@ class MidtransNotificationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Laravel skips the CSRF check while running tests, but Midtrans
+        // can't send a CSRF token. Turn the check back on, as in production.
+        $this->app->bind(PreventRequestForgery::class, fn ($app) => new class($app, $app['encrypter']) extends PreventRequestForgery
+        {
+            protected function runningUnitTests()
+            {
+                return false;
+            }
+        });
 
         config(['services.midtrans.server_key' => 'server-key-test']);
         $this->order = Order::create(['order_id' => 'ORDER-1001', 'amount' => 150000]);
